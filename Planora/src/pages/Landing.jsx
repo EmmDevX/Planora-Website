@@ -279,7 +279,7 @@ function Landing() {
         <div className="footer-container">
           <div className="footer-brand">
             <img src="images/favicon.png" alt="Planora" className="logo-icon" />
-            <span className="logo-text">Planora</span>
+            <span className="logo-texts">Planora</span>
           </div>
           <div className="foot-text">
               <p className="footer-text">© 2026 Planora. All rights reserved.</p>
