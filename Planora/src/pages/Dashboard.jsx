@@ -10,6 +10,90 @@ const getSavedUserEmail = () => {
 };
 
 function Dashboard() {
+  const [notes, setNotes] = useState(() => {
+  const email = getSavedUserEmail();
+  return JSON.parse(localStorage.getItem(`notes_${email}`) || "[]");
+});
+
+const [showAddNoteModal, setShowAddNoteModal] = useState(false);
+
+const [newNote, setNewNote] = useState({
+  title: "",
+  content: "",
+  pdf: null
+});
+const months = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
+];
+
+const daysInMonth = (month, year) => {
+  return new Date(year, month + 1, 0).getDate();
+};
+
+const startDayOfMonth = (month, year) => {
+  return new Date(year, month, 1).getDay();
+};
+const prevMonth = () => {
+  if (currentMonth === 0) {
+    setCurrentMonth(11);
+    setCurrentYear(prev => prev - 1);
+  } else {
+    setCurrentMonth(prev => prev - 1);
+  }
+};
+
+const nextMonth = () => {
+  if (currentMonth === 11) {
+    setCurrentMonth(0);
+    setCurrentYear(prev => prev + 1);
+  } else {
+    setCurrentMonth(prev => prev + 1);
+  }
+};
+const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+const saveNotes = (newNotes) => {
+  setNotes(newNotes);
+  const email = currentUser.email || "";
+  localStorage.setItem(`notes_${email}`, JSON.stringify(newNotes));
+};
+console.log(newNote.pdf);
+const handlePdfUpload = (e) => {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  if (file.type !== "application/pdf") {
+    alert("Only PDF files allowed");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onloadend = () => {
+    // VERY IMPORTANT: ensure it's stored
+    setNewNote(prev => ({
+      ...prev,
+      pdf: reader.result
+    }));
+  };
+
+  reader.readAsDataURL(file);
+};
+const handleAddNote = () => {
+  if (!newNote.title) return;
+
+  const note = {
+    id: Date.now(),
+    ...newNote
+  };
+
+  saveNotes([...notes, note]);
+
+  setNewNote({ title: "", content: "", pdf: null });
+  setShowAddNoteModal(false);
+};
   const [activeTab, setActiveTab] = useState("overview");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentUser, setCurrentUser] = useState(() => JSON.parse(localStorage.getItem("currentUser") || "{}"));
@@ -292,34 +376,51 @@ function Dashboard() {
         );
 
       case "calendar":
-        return (
-          <div className="calendar-page">
-            <h2>Calendar</h2>
-            <div className="calendar-container">
-              <div className="calendar-header">
-                <button className="cal-nav prev">&larr;</button>
-                <h3>April 2026</h3>
-                <button className="cal-nav next">&rarr;</button>
+  const totalDays = daysInMonth(currentMonth, currentYear);
+  const startDay = startDayOfMonth(currentMonth, currentYear);
+
+  return (
+    <div className="calendar-page">
+      <h2>Calendar</h2>
+
+      <div className="calendar-container">
+        <div className="calendar-header">
+          <button className="cal-nav" onClick={prevMonth}>←</button>
+
+          <h3>{months[currentMonth]} {currentYear}</h3>
+
+          <button className="cal-nav" onClick={nextMonth}>→</button>
+        </div>
+
+        <div className="calendar-grid">
+          {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
+            <div key={d} className="cal-day-header">{d}</div>
+          ))}
+
+          {/* Empty slots before month starts */}
+          {Array.from({ length: startDay }).map((_, i) => (
+            <div key={`empty-${i}`} className="cal-day other-month"></div>
+          ))}
+
+          {/* Days */}
+          {Array.from({ length: totalDays }, (_, i) => {
+            const day = i + 1;
+
+            const hasEvent = events.some(e =>
+              e.date?.includes(`${day}`)
+            );
+
+            return (
+              <div key={day} className="cal-day">
+                <span className="day-number">{day}</span>
+                {hasEvent && <div className="event-dot"></div>}
               </div>
-              <div className="calendar-grid">
-                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
-                  <div key={day} className="cal-day-header">{day}</div>
-                ))}
-                {Array.from({ length: 35 }, (_, i) => {
-                  const day = i - 2;
-                  const isToday = day === 25;
-                  const hasEvent = events.some(e => parseInt(e.date) === day || e.date.includes(day));
-                  return (
-                    <div key={i} className={`cal-day ${day < 1 ? 'other-month' : ''} ${isToday ? 'today' : ''}`}>
-                      <span className="day-number">{day < 1 ? 35 + day : day > 30 ? day - 30 : day}</span>
-                      {hasEvent && day > 0 && day <= 30 && <div className="event-dot"></div>}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        );
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
 
       case "timetable":
         return (
@@ -435,32 +536,37 @@ function Dashboard() {
           </div>
         );
 
-      case "notes":
-        return (
-          <div className="notes-page">
-            <div className="page-header">
-              <h2>My Notes</h2>
-              <button className="add-btn">+ New Note</button>
-            </div>
-            <div className="notes-grid">
-              <div className="note-card">
-                <h3>Mathematics Formulas</h3>
-                <p>Key formulas for calculus and algebra...</p>
-                <span className="note-date">Updated Apr 20</span>
-              </div>
-              <div className="note-card">
-                <h3>Physics Notes - Waves</h3>
-                <p>Understanding wave properties and behavior...</p>
-                <span className="note-date">Updated Apr 18</span>
-              </div>
-              <div className="note-card">
-                <h3>English Essay Outline</h3>
-                <p>Structure for persuasive essay writing...</p>
-                <span className="note-date">Updated Apr 15</span>
-              </div>
-            </div>
+    case "notes":
+  return (
+    <div className="notes-page">
+      <div className="page-header">
+        <h2>My Notes</h2>
+        <button className="add-btn" onClick={() => setShowAddNoteModal(true)}>
+          + New Note
+        </button>
+      </div>
+
+      <div className="notes-grid">
+        {notes.length > 0 ? notes.map(note => (
+          <div key={note.id} className="note-card">
+            <h3>{note.title}</h3>
+            <p>{note.content}</p>
+
+            {note.pdf && (
+              <button
+  className="pdf-link"
+  onClick={() => window.open(note.pdf, "_blank")}
+>
+  📄 View PDF
+</button>
+            )}
           </div>
-        );
+        )) : (
+          <div className="empty-state">No notes yet. Add one!</div>
+        )}
+      </div>
+    </div>
+  );
 
       case "settings":
         return (
@@ -538,9 +644,17 @@ function Dashboard() {
       <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <img src={logo} alt="Planora" className="sidebar-logo-img" />
+            <img src="images/favicon.png" alt="Planora" className="sidebar-logo-img" />
             {sidebarOpen && <span className="logo-text">Planora</span>}
           </div>
+
+           {/* Close button (mobile only) */}
+  <button 
+    className="close-sidebar-btn"
+    onClick={() => setSidebarOpen(false)}
+  >
+    ✕
+  </button>
         </div>
 
         <nav className="sidebar-nav">
@@ -695,6 +809,45 @@ function Dashboard() {
           </div>
         </div>
       )}
+
+      {showAddNoteModal && (
+  <div className="modal-overlay" onClick={() => setShowAddNoteModal(false)}>
+    <div className="modal-content" onClick={e => e.stopPropagation()}>
+      <h3>Add Note</h3>
+
+      <div className="form-group">
+        <label>Title</label>
+        <input
+          type="text"
+          value={newNote.title}
+          onChange={(e) => setNewNote({...newNote, title: e.target.value})}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Content</label>
+        <textarea
+          value={newNote.content}
+          onChange={(e) => setNewNote({...newNote, content: e.target.value})}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Upload PDF</label>
+        <input type="file" accept="application/pdf" onChange={handlePdfUpload} />
+      </div>
+
+      <div className="modal-buttons">
+        <button className="cancel-btn" onClick={() => setShowAddNoteModal(false)}>
+          Cancel
+        </button>
+        <button className="save-btn" onClick={handleAddNote}>
+          Save Note
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Add Task Modal */}
       {showAddTaskModal && (
