@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import "../App.css";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 // Animation variants
 const fadeInUp = {
@@ -43,26 +44,58 @@ function Landing() {
         variants={fadeInUp}
         transition={{ duration: 0.8 }}
       >
+        <div className="hero-wrapper">
+
+        </div>
         <div className="hero-content">
           <motion.h1 variants={fadeInUp} transition={{ duration: 0.8, delay: 0.2 }}>
-            Welcome to Planora
+          Plan Smarter. 
+          Study Better.   
+          <span className="span-text">  Achieve More</span>
           </motion.h1>
           <motion.p variants={fadeInUp} transition={{ duration: 0.8, delay: 0.4 }}>
-            Your ultimate planning companion for a more organized life
+            Organize your tasks,track your progress and boost your productivity with a simple study planner built for students
           </motion.p>
           <motion.div 
             className="hero-buttons" 
             variants={fadeInUp} 
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <a href="#pricing" className="btn-primary">
-              Get Started
-            </a>
-            <a href="#how-it-works" className="btn-secondary">
-              Learn More
-            </a>
-          </motion.div>
+            <Link to="/register" className="btn-primary">
+              Get Started &#8594;
+              </Link>
+            <Link to="/login" className="btn-secondary">
+                View Demo →
+              </Link>
+            </motion.div>
+            <motion.div 
+  className="hero-social"
+  variants={fadeInUp} 
+  transition={{ duration: 0.8, delay: 0.6 }}
+>
+  <div className="hero-avatars">
+    <div className="avatars">
+      <img src="images/avatar1.jpg" alt="User 1" className="avatar" />
+      <img src="images/avatar2.jpg" alt="User 2" className="avatar" />
+      <img src="images/avatar3.jpg" alt="User 3" className="avatar" />
+      <img src="images/avatar3.jpg" alt="User 3" className="avatar" />
+      <img src="images/avatar3.jpg" alt="User 3" className="avatar" />
+  </div>
+  <p>Join 25,000+ students who are already planning smarter!</p>
+  </div>
+</motion.div>
         </div>
+             {/* HERO IMAGE */}
+<div className="hero-image-wrapper">
+
+  <div className="hero-image-border">
+    <div className="hero-image-circle">
+      <img src="images/side-image.jpg" alt="Hero Illustration" />
+    </div>
+  </div>
+
+</div>
+    
       </motion.section>
 
       {/* How It Works Section with fadeInUp and staggered child animations */}
@@ -84,17 +117,17 @@ function Landing() {
             variants={staggerContainer}
           >
             <motion.div className="feature-card" variants={fadeInUp} transition={{ duration: 0.5 }}>
-              <div className="feature-icon">📝</div>
+              <div className="feature-icon"><img src="images/note.jpg" alt="Note Icon" /></div>
               <h3>Create Your Plan</h3>
               <p>Start by outlining your goals and objectives in a few simple steps.</p>
             </motion.div>
             <motion.div className="feature-card" variants={fadeInUp} transition={{ duration: 0.5 }}>
-              <div className="feature-icon">🎯</div>
+              <div className="feature-icon"><img src="images/dart.png" alt="Target Icon" /></div>
               <h3>Set Milestones</h3>
               <p>Break down your plan into achievable milestones and track progress.</p>
             </motion.div>
             <motion.div className="feature-card" variants={fadeInUp} transition={{ duration: 0.5 }}>
-              <div className="feature-icon">📊</div>
+              <div className="feature-icon"><img src="images/chart.png" alt="Chart Icon" /></div>
               <h3>Monitor Progress</h3>
               <p>Visualize your progress with intuitive charts and analytics.</p>
             </motion.div>
@@ -184,7 +217,7 @@ function Landing() {
             <motion.div className="testimonial-card" variants={fadeInUp} transition={{ duration: 0.5 }}>
               <p className="testimonial-text">"Planora has completely transformed how I manage my projects. It's intuitive, powerful, and a joy to use every day."</p>
               <div className="testimonial-author">
-                <div className="author-avatar">ET</div>
+                <div className="author-avatar"><img src="images/emmanuel.jpg" alt="Emmanuel Taiwo" /></div>
                 <div className="author-info">
                   <strong>Emmanuel Taiwo</strong>
                   <span>Founder</span>
@@ -194,30 +227,33 @@ function Landing() {
             <motion.div className="testimonial-card" variants={fadeInUp} transition={{ duration: 0.5 }}>
               <p className="testimonial-text">"The best planning tool I've ever used. The milestone tracking feature alone has saved me countless hours."</p>
               <div className="testimonial-author">
-                <div className="author-avatar">SO</div>
+                <div className="author-avatar"><img src="images/michael.jpg" alt="Sophie Okafor" /></div>
                 <div className="author-info">
-                  <strong>Shonibare Olaoluwa</strong>
-                  <span>Freelance Designer</span>
+                  <strong>Nwikegha Suanu</strong>
+                  <span>Content Creator</span>
                 </div>
               </div>
             </motion.div>
+
+            
             <motion.div className="testimonial-card" variants={fadeInUp} transition={{ duration: 0.5 }}>
               <p className="testimonial-text">"The best planning tool I've ever used. The milestone tracking feature alone has saved me countless hours."</p>
               <div className="testimonial-author">
-                <div className="author-avatar">AT</div>
+                <div className="author-avatar"><img src="images/philip.jpg" alt="Adedokun Timothy" /></div>
                 <div className="author-info">
-                  <strong>Adedokun Timothy</strong>
-                  <span>Graphics Designer</span>
+                  <strong>Oyekunle Philip</strong>
+                  <span>Front-end Developer</span>
                 </div>
               </div>
             </motion.div>
+            
             <motion.div className="testimonial-card" variants={fadeInUp} transition={{ duration: 0.5 }}>
               <p className="testimonial-text">"Our team's productivity increased by 40% after switching to Planora. Highly recommend it to any growing business."</p>
               <div className="testimonial-author">
-                <div className="author-avatar">MJ</div>
+                <div className="author-avatar"><img src="images/tofunmi.jpg" alt="Mike Johnson" /></div>
                 <div className="author-info">
-                  <strong>Mike Johnson</strong>
-                  <span>Startup Founder</span>
+                  <strong>Osinaike Tofunmi</strong>
+                  <span>400 Lvl, Anchor University</span>
                 </div>
               </div>
             </motion.div>
