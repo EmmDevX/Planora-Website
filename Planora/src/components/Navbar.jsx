@@ -9,7 +9,7 @@ function Navbar() {
       <div className="navbar-logo">
         <Link to="/" className="logo-link">
           <img src="images/favicon.png" alt="Planora" className="logo-icon" />
-          <span className="logo-text">Planora</span>
+          <span className="log-text">Planora</span>
         </Link>
       </div>
 
