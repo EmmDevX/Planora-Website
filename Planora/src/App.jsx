@@ -18,13 +18,13 @@ function App() {
     <Router>
       <Routes>
 
-        {/*Public Routes */}
+        /*Public Routes */
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify" element={<VerifyEmail />} />
 
-        {/* Protected Route */}
+        /* Protected Route */
         <Route
           path="/dashboard"
           element={

@@ -31,10 +31,10 @@ const scaleIn = {
 function Landing() {
   return (
     <div className="landing-page">
-      {/* Navbar - No animations applied */}
+      /* Navbar - No animations applied */
       <Navbar />
 
-      {/* Hero Section */}
+      /* Hero Section */
       <motion.section 
         id="hero" 
         className="hero-section"
@@ -65,7 +65,7 @@ function Landing() {
         </div>
       </motion.section>
 
-      {/* How It Works Section */}
+      /* How It Works Section */
       <motion.section 
         id="how-it-works" 
         className="section"
@@ -102,7 +102,7 @@ function Landing() {
         </div>
       </motion.section>
 
-      {/* Pricing Section */}
+      /* Pricing Section */
       <motion.section 
         id="pricing" 
         className="section section-alt"
@@ -163,7 +163,7 @@ function Landing() {
         </div>
       </motion.section>
 
-      {/* Testimonial Section */}
+      /* Testimonial Section */
       <motion.section 
         id="testimonial" 
         className="section"
@@ -225,7 +225,7 @@ function Landing() {
         </div>
       </motion.section>
 
-      {/* About Us Section */}
+      /* About Us Section */
       <motion.section 
         id="about" 
         className="section section-alt"
@@ -267,7 +267,7 @@ function Landing() {
         </div>
       </motion.section>
 
-      {/* Footer */}
+      /* Footer */
       <motion.footer 
         className="footer"
         initial="hidden"
