@@ -359,18 +359,18 @@ body {
 /* Footer */
 .footer {
   background: #1a1a1a;
-  padding: 40px 20px;
+  padding: 10px 5px;
+  height: auto;
 }
 
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  gap: 160px;
   align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
-}
+ }
 
 .footer-brand {
   display: flex;
@@ -388,8 +388,68 @@ body {
 
 .footer-text {
   color: #888;
+  text-align: center;
   font-size: 0.9rem;
 }
+
+.userlinks {
+  display: flex;
+  margin-top: 5px;
+  gap: 5px;
+  flex-direction: column;
+}
+
+.userlinks a{
+  color: #888;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.userlinks a:hover{
+  color: #2563eb;
+}
+
+.tags{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.tags a{
+  color: #888;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.tags a:hover{
+  color: #2563eb;
+}
+
+.message-me{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-me img{
+  width: 24px;
+  border
+  height: 24px;
+  position: relative;
+  filter: invert(100%);
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.message-me img:hover{
+  transform: scale(1.2);
+} 
 
 /* Responsive Design */
 @media (max-width: 768px) {

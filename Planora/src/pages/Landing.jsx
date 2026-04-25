@@ -281,8 +281,29 @@ function Landing() {
             <img src="images/favicon.png" alt="Planora" className="logo-icon" />
             <span className="logo-text">Planora</span>
           </div>
-          <p className="footer-text">© 2026 Planora. All rights reserved.</p>
-        </div>
+          <div className="foot-text">
+              <p className="footer-text">© 2026 Planora. All rights reserved.</p>
+          </div>
+          <div className="userlinks">
+            <div><a href="#hero">Home</a></div>
+            <div><a href="#how-it-works">How It Works</a></div>
+            <div><a href="#pricing">Pricing</a></div>
+            <div><a href="#testimonial">Testimonial</a></div>
+            <div><a href="#about">About Us</a></div>
+          </div>
+           <div className="tags">
+            <div><a href="#hero">FAQs</a></div>
+            <div><a href="#help-center">Help Center</a></div>
+            <div><a href="#how-it-works">Privacy Policy</a></div>
+            <div><a href="#pricing">Terms of Service</a></div>
+          </div>
+
+            <div className="message-me">
+             <a href="https://wa.me/+2347025183733"><img src="images/message.svg"></img></a>
+          </div>
+
+
+           </div>
       </motion.footer>
     </div>
   );
