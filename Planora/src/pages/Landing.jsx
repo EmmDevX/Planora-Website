@@ -86,15 +86,7 @@ function Landing() {
 </motion.div>
         </div>
              {/* HERO IMAGE */}
-<div className="hero-image-wrapper">
 
-  <div className="hero-image-border">
-    <div className="hero-image-circle">
-      <img src="images/side-image.jpg" alt="Hero Illustration" />
-    </div>
-  </div>
-
-</div>
     
       </motion.section>
 
