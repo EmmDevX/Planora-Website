@@ -629,6 +629,7 @@ body {
   }
 
   .hero-avatars {
+    flex-direction: column;
     margin-left: 0;
     justify-content: center;
   }
@@ -636,6 +637,7 @@ body {
   /* IMAGE FIX */
   .hero-image-wrapper {
     margin-right: 0;
+    display: none;
   }
 
   .hero-image-border {
@@ -646,6 +648,12 @@ body {
   .hero-image-circle {
     width: 180px;
     height: 180px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
   }
 }
 @media (max-width: 1024px) {

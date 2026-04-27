@@ -1,20 +1,116 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Dashboard.css";
-import logo from "../assets/logo.svg";
 
+
+
+function Dashboard() {
+  
 // Helper to get saved user email
 const getSavedUserEmail = () => {
   const savedUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
   return savedUser.email || "";
 };
-
-function Dashboard() {
   const [notes, setNotes] = useState(() => {
-  const email = getSavedUserEmail();
+    const email = getSavedUserEmail();
   return JSON.parse(localStorage.getItem(`notes_${email}`) || "[]");
 });
 
+const colors = [
+  "#fef3c7",
+  "#dbeafe",
+  "#dcfce7",
+  "#fae8ff",
+  "#ffe4e6",
+  "#e0f2fe",
+  "#ede9fe",
+  "#fef9c3",
+  "#f0fdf4",
+  "#0000FF"
+
+];
+
+function getDailyIndex(email) {
+  const today = new Date().toDateString();
+
+  let hash = 0;
+  const input = email + today;
+
+  for (let i = 0; i < input.length; i++) {
+    hash = input.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  return Math.abs(hash);
+}
+const [bgColor, setBgColor] = useState("#fef3c7");
+
+useEffect(() => {
+  const email = getSavedUserEmail();
+
+  const index = getDailyIndex(email) % quotes.length;
+
+  
+}, []);
+
+const [quote, setQuote] = useState("");
+
+
+const quotes = [
+  "Small steps every day lead to big results.",
+  "Consistency beats intensity—show up daily.",
+  "Progress, not perfection.",
+  "Discipline creates freedom.",
+  "Focus on one task, finish it well.",
+  "Your future is built by what you do today.",
+  "Success comes from daily habits, not motivation.",
+  "Do it even when you don’t feel like it.",
+  "Stay patient. Stay consistent. Stay focused.",
+  "Great things are built quietly over time.",
+  "Growth begins at the end of your comfort zone.",
+  "Every expert was once a beginner.",
+  "Small improvements every day lead to massive results.",
+  "Mistakes are proof you are trying.",
+  "Keep going. You’re closer than you think.",
+  "Progress is better than perfection.",
+  "Don’t stop when you’re tired—stop when you’re done.",
+  "You become what you repeatedly do.",
+  "Struggles build strength.",
+  "The best time to start was yesterday. The next best is now."
+];
+
+function getDailyQuote(email) {
+  const today = new Date().toDateString();
+
+  // combine email + date so each user gets different result
+  let hash = 0;
+  const input = email + today;
+
+  for (let i = 0; i < input.length; i++) {
+    hash = input.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const index = Math.abs(hash) % quotes.length;
+  return quotes[index];
+}
+
+useEffect(() => {
+  const email = getSavedUserEmail();
+  const today = new Date().toDateString();
+
+  const savedDate = localStorage.getItem(`quoteDate_${email}`);
+  const savedQuote = localStorage.getItem(`quote_${email}`);
+
+  if (savedDate === today && savedQuote) {
+    setQuote(savedQuote);
+  } else {
+    const newQuote = getDailyQuote(email);
+
+    localStorage.setItem(`quoteDate_${email}`, today);
+    localStorage.setItem(`quote_${email}`, newQuote);
+
+    setQuote(newQuote);
+  }
+}, []);
 const [showAddNoteModal, setShowAddNoteModal] = useState(false);
 
 const [newNote, setNewNote] = useState({
@@ -164,7 +260,7 @@ const handleAddNote = () => {
       ...newClass
     };
     saveTimetable([...timetable, classItem]);
-    setNewClass({ subject: "", day: "Monday", time: "", duration: "", room: "" });
+    setNewClass({ subject: "", day: "Monday", time: "", duration: "", Venue: "" });
     setShowAddClassModal(false);
   };
 
@@ -252,7 +348,7 @@ const handleAddNote = () => {
     setTimeout(() => setSettingsMessage(""), 3000);
   };
 
-  const timeSlots = ["09:00 AM", "11:00 AM", "02:00 PM", "04:00 PM"];
+  const timeSlots = ["08.00AM", "09:00 AM","10:00 AM", "11:00 AM", "02:00 PM", "04:00 PM"];
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
   const getClassForSlot = (day, time) => {
@@ -281,29 +377,29 @@ const handleAddNote = () => {
               <div className="stat-card">
                 <div className="stat-icon">📚</div>
                 <div className="stat-info">
-                  <span className="stat-value">{new Set(timetable.map(t => t.subject)).size || 5}</span>
-                  <span className="stat-label">Subjects</span>
+                  <span className="stat-value">{new Set(timetable.map(t => t.subject)).size || 0}</span>
+                  <span className="stat-label"> Subjects</span>
                 </div>
               </div>
               <div className="stat-card">
                 <div className="stat-icon">✅</div>
                 <div className="stat-info">
                   <span className="stat-value">{tasks.filter(t => t.completed).length}</span>
-                  <span className="stat-label">Tasks Done</span>
+                  <span className="stat-label"> Tasks Done</span>
                 </div>
               </div>
               <div className="stat-card">
                 <div className="stat-icon">📅</div>
                 <div className="stat-info">
                   <span className="stat-value">{events.length}</span>
-                  <span className="stat-label">Upcoming</span>
+                  <span className="stat-label"> Upcoming</span>
                 </div>
               </div>
               <div className="stat-card">
                 <div className="stat-icon">⏰</div>
                 <div className="stat-info">
                   <span className="stat-value">{timetable.length * 1.5}h</span>
-                  <span className="stat-label">Study Time</span>
+                  <span className="stat-label"> Study Time</span>
                 </div>
               </div>
             </div>
@@ -370,13 +466,29 @@ const handleAddNote = () => {
                     <div className="empty-state">No events yet. <button onClick={() => { setActiveTab("events"); setShowAddEventModal(true); }}>Add an event</button></div>
                   )}
                 </div>
+                
               </div>
+                <div className="section-card events-section">
+                <div className="section-header">
+                  <h2>Study Tips for the Day</h2>
+               </div>
+              <div className="quote"  style={{
+    backgroundColor: bgColor,
+    padding: "20px",
+    borderRadius: "12px",
+    transition: "0.3s ease"
+  }}>
+               <q>{quote}</q>
+              </div>
+                
+              </div>
+              
             </div>
           </div>
         );
 
       case "calendar":
-  const totalDays = daysInMonth(currentMonth, currentYear);
+  { const totalDays = daysInMonth(currentMonth, currentYear);
   const startDay = startDayOfMonth(currentMonth, currentYear);
 
   return (
@@ -420,7 +532,7 @@ const handleAddNote = () => {
         </div>
       </div>
     </div>
-  );
+  ); }
 
       case "timetable":
         return (
@@ -662,56 +774,56 @@ const handleAddNote = () => {
             className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
             onClick={() => setActiveTab('overview')}
           >
-            <span className="nav-icon">🏠</span>
+            <span className="nav-icon"><img src="images/home.png" alt="Overview" /></span>
             {sidebarOpen && <span>Overview</span>}
           </button>
           <button 
             className={`nav-item ${activeTab === 'calendar' ? 'active' : ''}`}
             onClick={() => setActiveTab('calendar')}
           >
-            <span className="nav-icon">📅</span>
+            <span className="nav-icon"><img src="images/calendar.svg" alt="Calendar" /></span>
             {sidebarOpen && <span>Calendar</span>}
           </button>
           <button 
             className={`nav-item ${activeTab === 'timetable' ? 'active' : ''}`}
             onClick={() => setActiveTab('timetable')}
           >
-            <span className="nav-icon">📋</span>
+            <span className="nav-icon"><img src="images/clock.svg" alt="Timetable" /></span>
             {sidebarOpen && <span>Timetable</span>}
           </button>
           <button 
             className={`nav-item ${activeTab === 'events' ? 'active' : ''}`}
             onClick={() => setActiveTab('events')}
           >
-            <span className="nav-icon">🎯</span>
+            <span className="nav-icon"><img src="images/events.png" alt="Events" /></span>
             {sidebarOpen && <span>Events</span>}
           </button>
           <button 
             className={`nav-item ${activeTab === 'tasks' ? 'active' : ''}`}
             onClick={() => setActiveTab('tasks')}
           >
-            <span className="nav-icon">✅</span>
+            <span className="nav-icon"><img src="images/check-square.svg" alt="Tasks" /></span>
             {sidebarOpen && <span>Tasks</span>}
           </button>
           <button 
             className={`nav-item ${activeTab === 'notes' ? 'active' : ''}`}
             onClick={() => setActiveTab('notes')}
           >
-            <span className="nav-icon">📝</span>
+            <span className="nav-icon"><img src="images/note.png" alt="Notes" /></span>
             {sidebarOpen && <span>Notes</span>}
           </button>
           <button 
             className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
             onClick={() => setActiveTab('settings')}
           >
-            <span className="nav-icon">⚙️</span>
+            <span className="nav-icon"><img src="images/tool.svg" alt="Settings" /></span>
             {sidebarOpen && <span>Settings</span>}
           </button>
         </nav>
 
         <div className="sidebar-footer">
           <button className="logout-btn" onClick={handleLogout}>
-            <span className="nav-icon">📤 </span>
+            <span className="nav-icon"><img src="images/power.svg" alt="Logout" /></span>
             {sidebarOpen && <span>Logout</span>}
           </button>
         </div>
@@ -778,8 +890,8 @@ const handleAddNote = () => {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <h3>Add New Class</h3>
             <div className="form-group">
-              <label>Subject</label>
-              <input type="text" value={newClass.subject} onChange={e => setNewClass({...newClass, subject: e.target.value})} placeholder="Subject name" />
+              <label>Course</label>
+              <input type="text" value={newClass.subject} onChange={e => setNewClass({...newClass, subject: e.target.value})} placeholder="Course name" />
             </div>
             <div className="form-group">
               <label>Day</label>
@@ -799,8 +911,8 @@ const handleAddNote = () => {
               <input type="text" value={newClass.duration} onChange={e => setNewClass({...newClass, duration: e.target.value})} placeholder="e.g., 1h 30m" />
             </div>
             <div className="form-group">
-              <label>Room</label>
-              <input type="text" value={newClass.room} onChange={e => setNewClass({...newClass, room: e.target.value})} placeholder="Room number" />
+              <label>Venue</label>
+              <input type="text" value={newClass.room} onChange={e => setNewClass({...newClass, room: e.target.value})} placeholder="Lecture Venue" />
             </div>
             <div className="modal-buttons">
               <button className="cancel-btn" onClick={() => setShowAddClassModal(false)}>Cancel</button>

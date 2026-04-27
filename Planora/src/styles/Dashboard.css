@@ -84,6 +84,13 @@
   text-align: center;
 }
 
+.nav-icon img{
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  filter: invert(100%);
+}
+
 /* Sidebar Footer */
 .sidebar-footer {
   padding: 16px 12px;
@@ -136,6 +143,16 @@
   position: sticky;
   top: 0;
   z-index: 50;
+}
+
+
+
+ q {
+  font-size: 1rem;
+  font-style: italic;
+  padding: 12px;
+  text-align: center;
+  justify-content: center;
 }
 
 .menu-toggle {
